@@ -1,131 +1,79 @@
-
-// Reading & storing the data from the csv file for 2016
-
-d3.csv("cost_of_living_data_2016.csv", function(error, data2016) {
-  // if (error) throw error;
-  d3.csv("cost_of_living_data_2017.csv", function(error, data2017) {
-    // if (error) throw error;
-    d3.csv("cost_of_living_data_2018.csv", function(error, data2018) {
-      // if (error) throw error;
-      console.log(data2016);
-      var cities = data2016.map(row => row[`City`]);
-      var countries = data2016.map(row => row[`Country`]);
-      var livingIndex2016 = data2016.map(row => row[`Cost of Living Index`]);
-      var rentIndex2016 = data2016.map(row => row[`Rent Index`]);
-      var livingRentIndex2016 = data2016.map(row => row[`Cost of Living Plus Rent Index`]);
-      var groceriesIndex2016 = data2016.map(row => row[`Groceries Index`]);
-      var restaurantIndex2016 = data2016.map(row => row[`Restaurant Price Index`]);
-      var localPurchanigPowerIndex2016 = data2016.map(row => row[`Local Purchasing Power Index`]);
-      var coordinates = data2016.map(row => row.latitude + ", " + row.longitude);
-      // Reading & storing the data from the csv file for 2017
-      var livingIndex2017 = data2017.map(row => row[`Cost of Living Index`]);
-      var rentIndex2017 = data2017.map(row => row[`Rent Index`]);
-      var livingRentIndex2017 = data2017.map(row => row[`Cost of Living Plus Rent Index`]);
-      var groceriesIndex2017 = data2017.map(row => row[`Groceries Index`]);
-      var restaurantIndex2017 = data2017.map(row => row[`Restaurant Price Index`]);
-      var localPurchanigPowerIndex2017 = data2017.map(row => row[`Local Purchasing Power Index`]);
-      // Reading & storing the data from the csv file for 2018
-      var livingIndex2018 = data2018.map(row => row[`Cost of Living Index`]);
-      var rentIndex2018 = data2018.map(row => row[`Rent Index`]);
-      var livingRentIndex2018 = data2018.map(row => row[`Cost of Living Plus Rent Index`]);
-      var groceriesIndex2018 = data2018.map(row => row[`Groceries Index`]);
-      var restaurantIndex2018 = data2018.map(row => row[`Restaurant Price Index`]);
-      var localPurchanigPowerIndex2018 = data2018.map(row => row[`Local Purchasing Power Index`]);
-      // console.log(cities);
-      // console.log(countries);
-      // console.log(coordinates);
-  
-// Define arrays to hold the data city markers
-var data2016Markers = [];
-var data2017Markers = [];
-var data2018Markers = [];
-
-// Loop through 2016 Ccities data to create markers
-for (var i = 0; i < cities.length; i++) {
-  // Setting the marker radius for the state by passing population into the markerSize function
-  data2016Markers.push(
-    L.markers(coordinates[i], {
-      stroke: false,
-      fillOpacity: 0.75,
-      color: "blue",
-      fillColor: "white"
-    })
-  );
-}
-// Loop through 2017 cities data to create markers
-for (var i = 0; i < cities.length; i++) {
-  // Setting the marker radius for the state by passing population into the markerSize function
-  data2017Markers.push(
-    L.markers(coordinates[i], {
-      stroke: false,
-      fillOpacity: 0.75,
-      color: "blue",
-      fillColor: "white"
-    })
-  );
-}
-
-// Loop through 2018 cities data to create markers
-for (var i = 0; i < cities.length; i++) {
-  // Setting the marker radius for the state by passing population into the markerSize function
-  data2018Markers.push(
-    L.markers(coordinates[i], {
-      stroke: false,
-      fillOpacity: 0.75,
-      color: "blue",
-      fillColor: "white"
-    })
-  );
-}
-
-// Define variables for our base layers
+// **************************************************************
+// UC berkeley Data Analytics Bootcamp
+// UCBSAN201811DATA2  - 2018-2019
+// Project 2 :   **** Cost of living around the world ****
+// Cora Gnikobou, Joe Abuzaid, Eric Chee, Alex Davis, Jesus Lara
+// **************************************************************
+//
+// Define variables for our streetmap base layers
 var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-  maxZoom: 18,
-  id: "mapbox.streets",
-  accessToken: API_KEY
+attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+maxZoom: 3,
+id: "mapbox.streets",
+accessToken: API_KEY
 });
 
+// Define variables for our darkmap base layers
 var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-  maxZoom: 18,
-  id: "mapbox.dark",
-  accessToken: API_KEY
+attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+maxZoom: 3,
+id: "mapbox.dark",
+accessToken: API_KEY
 });
-
-// Create three separate layer groups: one for each year
-var data2016 = L.layerGroup(data2016Markers);
-var data2017 = L.layerGroup(data2017Markers);
-var data2018 = L.layerGroup(data2018Markers);
-
 
 // Create a baseMaps object
 var baseMaps = {
-  "Street Map": streetmap,
-  "Dark Map": darkmap
+"Street Map": streetmap,
+"Dark Map": darkmap
 };
 
-// Create an overlay object
-var overlayMaps = {
-  "2016 data": data2016,
-  "2017 data": data2017,
-  "2018 data": data2018
-  
-};
-
-// Define a map object
-var myMap = L.map("map", {
-  center: [37.09, -95.71],
-  zoom: 5,
-  layers: [streetmap, data2016, data2017, data2018]
-});
-
-// Pass our map layers into our layer control
-// Add the layer control to the map
-L.control.layers(baseMaps, overlayMaps, {
-  collapsed: false
-}).addTo(myMap);
-
+// Reading, filtering & storing the data from the 2016 csv data file
+d3.csv("cost_of_living_data_combine.csv").then(data => {
+    data2016 = data.filter(d => d.Year === '2016');
+    data2017 = data.filter(d => d.Year === '2017');
+    data2018 = data.filter(d => d.Year === '2018');
+    var dataMarkers2016 = [];
+    var dataMarkers2017 = [];
+    var dataMarkers2018 = [];
+    // Storing the City data in cities
+        
+    // Generating the cities markers using the coordinates and bind popups with information for each year
+    data2016.forEach(d => {
+        dataMarkers2016.push(L.marker([parseFloat(d.latitude), parseFloat(d.longitude)])
+        .bindPopup("<h4>" + d.City + ", " + d.Country + "</h4>" + "<h6>" + "Rent Index: " + d.RentIndex + "</h6>" + "<h6>" + "Local Purchasing Power Index: " + d.LocalPurchasingPowerIndex + "</h6>"));
     });
-  });
+
+    data2017.forEach(d => {
+        dataMarkers2017.push(L.marker([parseFloat(d.latitude), parseFloat(d.longitude)])
+        .bindPopup("<h4>" + d.City + ", " + d.Country + "</h4>" + "<h6>" + "Rent Index: " + d.RentIndex + "</h6>" + "<h6>" + "Local Purchasing Power Index: " + d.LocalPurchasingPowerIndex + "</h6>"));
+    });
+        
+    data2018.forEach(d => { 
+        dataMarkers2018.push(L.marker([parseFloat(d.latitude), parseFloat(d.longitude)])
+        .bindPopup("<h4>" + d.City + ", " + d.Country + "</h4>" + "<h6>" + "Rent Index: " + d.RentIndex + "</h6>" + "<h6>" + "Local Purchasing Power Index: " + d.LocalPurchasingPowerIndex + "</h6>"));
+    });
+    
+    // Create an overlay objects for the three years
+    var dataLayers2016 = L.layerGroup(dataMarkers2016);
+    var dataLayers2017 = L.layerGroup(dataMarkers2017);
+    var dataLayers2018 = L.layerGroup(dataMarkers2018);
+
+    var overlayMaps = {
+        "2016 data": dataLayers2016,
+        "2017 data": dataLayers2017,
+        "2018 data": dataLayers2018
+    };
+
+    // Define a map object
+    var myMap = L.map("map", {
+    center: [37.09, -95.71],
+    zoom: 5,
+    layers: [streetmap, dataLayers2016, dataLayers2017, dataLayers2018]
+    });
+
+    // Pass our map layers into our layer control
+    // Add the layer control to the map
+    L.control.layers(baseMaps, overlayMaps, {
+    collapsed: false
+    }).addTo(myMap);
 });
