@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-data = pd.read_csv("kaggle_income.csv") #encoding="latin1")
+data = pd.read_csv("cost_of_living_data_combine.csv")
 
 engine = create_engine('sqlite:///data/costofliving', echo = False)
 
@@ -16,7 +16,10 @@ data.to_sql('COL', con=engine)
 
 engine = create_engine('sqlite:///data/costofliving', echo = False)
 
-costdata = engine.execute("SELECT id,County,City FROM COL").fetchall()
-rowsdata = engine.execute("SELECT * FROM COL").fetchall()
+CityCountry = engine.execute("SELECT City,Country FROM COL").fetchall()
+costoflivingindex = engine.execute("SELECT CostofLivingIndex FROM COL").fetchall()
 
-print(type(costdata))
+#costdata = engine.execute("SELECT id,County,City FROM COL").fetchall()
+#rowsdata = engine.execute("SELECT * FROM COL").fetchall()
+#print(type(costdata))
+print(costoflivingindex)
