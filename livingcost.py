@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 
 data = pd.read_csv("cost_of_living_data_combine.csv")
 
-engine = create_engine('sqlite:///data/costofliving', echo = False)
+engine = create_engine('sqlite:///data/costofliving.sqlite', echo = False)
 
 data.to_sql('COL', con=engine)
 
@@ -13,7 +13,7 @@ data.to_sql('COL', con=engine)
 
 
 
-engine = create_engine('sqlite:///data/costofliving', echo = False)
+engine = create_engine('sqlite:///data/costofliving.sqlite', echo = False)
 
 #CityCountry = engine.execute("SELECT City,Country FROM COL").fetchall()
 #costoflivingindex = engine.execute("SELECT CostofLivingIndex FROM COL").fetchall()
