@@ -260,7 +260,7 @@ heatLegend.valign = "bottom";
 heatLegend.width = am4core.percent(20);
 heatLegend.marginRight = am4core.percent(4);
 heatLegend.minValue = 0;
-heatLegend.maxValue = 100;
+heatLegend.maxValue = 1000;
 
 // Set up custom heat map legend labels using axis ranges
 var minRange = heatLegend.valueAxis.axisRanges.create();
@@ -268,12 +268,12 @@ minRange.value = heatLegend.minValue;
 minRange.label.text = "Little";
 var maxRange = heatLegend.valueAxis.axisRanges.create();
 maxRange.value = heatLegend.maxValue;
-maxRange.label.text = "A lot!";
+maxRange.label.text = "A Lot!";
 
 // Blank out internal heat legend value axis labels
-// heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(labelText) {
-//   return "";
-// });
+heatLegend.valueAxis.renderer.labels.template.adapter.add("text", function(labelText) {
+   return "";
+ });
 
 // Configure series tooltip
 var polygonTemplate = polygonSeries.mapPolygons.template;
